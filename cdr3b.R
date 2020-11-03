@@ -19,13 +19,13 @@ test<- count(new_data1, Subject, Stimulation,TCRusage,CDR3a,CDR3b)#Counting the 
 library(reshape2)
 
 final200<-test %>% filter(n != 1)# We are interested in the expanded clones so we get rid of cells that appear once with a given TCR usage and CDR3a and CDR3b sequences
-a=grep("HIV", final200$Subject) #In the data set for expanded clones, any expression that has "HIV" in is chosen
+a=grep("HIV", final200$Subject) #In the data set for expanded clones, any expression that has "HIV" in it is chosen
 final200$Subject[a]<-"HIV"#Any expression containing "HIV" is renamed as "HIV"
 
-b=grep("EC", final200$Subject)#In the data set for expanded clones, any expression that has "EC" in is chosen
+b=grep("EC", final200$Subject)#In the data set for expanded clones, any expression that has "EC" in it is chosen
 final200$Subject[b]<-"EC"#Any expression containing "EC" is renamed as "EC"
 
-c=grep("HD", final200$Subject)#In the data set for expanded clones, any expression that has "HD" in is chosen
+c=grep("HD", final200$Subject)#In the data set for expanded clones, any expression that has "HD" in it is chosen
 final200$Subject[c]<-"HD"#Any expression containing "HD" is renamed as "HD"
 
 final300<-final200[,c(1,2,5,6)]#The relevant columns are selected
