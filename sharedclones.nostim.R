@@ -46,7 +46,7 @@ HIV_Healthy_unstimulated1<-acast(HIV_Healthy_unstimulated, TCRusage+CDR3a+CDR3b~
 HIV_Healthy_unstimulated2<-HIV_Healthy_unstimulated1[!(apply(HIV_Healthy_unstimulated1,1, function(y) any(y == 0))),]#Select only those clones that are shared between healthy and HIV patients
 
 
-unstimulated <- final3 %>% filter(Stimulation =="no stim") #Filter out the expanded clones for un-stimulated consition for all the patients
+unstimulated <- final3 %>% filter(Stimulation =="no stim") #Filter out the expanded clones for un-stimulated condition for all the patients
 unstimulated1<-acast(unstimulated, TCRusage+CDR3a+CDR3b~Subject+Stimulation, value.var = "n", fun.aggregate = sum)#Calculate the number of clones with a ceratin TCR usage and CDR3a and CDR3b sequences
 unstimulated2<-unstimulated1[!(apply(unstimulated1,1, function(y) any(y == 0))),]#Select the clones that are shared among the three patients
 
