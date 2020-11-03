@@ -46,7 +46,7 @@ n=grep("RUNX1", new_data1$RUNX1)
 new_data1$RUNX1[n]<-1
 o=grep("RUNX3", new_data1$RUNX3)
 new_data1$RUNX3[o]<-1
-
+#The rows which have "NA" value for gene expressions are replaced with "0"
 new_data1$GATA3[is.na(new_data1$GATA3)]<-0
 new_data1$FOXP3[is.na(new_data1$FOXP3)]<-0
 new_data1$GZMB[is.na(new_data1$GZMB)]<-0
@@ -65,13 +65,13 @@ new_data1$RUNX3[is.na(new_data1$RUNX3)]<-0
 
 new_data2<-new_data1[,-c(3,4,6,7)]
 
-a=grep("HIV",new_data2$Subject)#In the data set for expanded clones, any expression that has "HIV" in it is chosen
+a=grep("HIV",new_data2$Subject)#In the data set , any expression that has "HIV" in it is chosen
 new_data2$Subject[a]<-"HIV"#Any expression containing "HIV" is renamed as "HIV"
 
-b=grep("EC", new_data2$Subject)#In the data set for expanded clones, any expression that has "EC" in it is chosen
+b=grep("EC", new_data2$Subject)#In the data set, any expression that has "EC" in it is chosen
 new_data2$Subject[b]<-"EC"#Any expression containing "EC" is renamed as "EC"
 
-c=grep("HD", new_data2$Subject)#In the data set for expanded clones, any expression that has "HD" in it is chosen
+c=grep("HD", new_data2$Subject)#In the data set, any expression that has "HD" in it is chosen
 new_data2$Subject[c]<-"HD"#Any expression containing "HD" is renamed as "HD"
 
 
