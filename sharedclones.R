@@ -41,13 +41,13 @@ Elite_HIV_stimulated2<-Elite_HIV_stimulated1[!(apply(Elite_HIV_stimulated1,1, fu
 
 
 
-HIV_Healthy_stimulated<-final3 %>% filter(Subject!="EC" & Stimulation=="stim")#Filter out the expanded clones for elite and healthy patients at un-stimulated condition
+HIV_Healthy_stimulated<-final3 %>% filter(Subject!="EC" & Stimulation=="stim")#Filter out the expanded clones for elite and healthy patients at stimulated condition
 HIV_Healthy_stimulated1<-acast(HIV_Healthy_stimulated, TCRusage+CDR3a+CDR3b~Subject+Stimulation, value.var = "n", fun.aggregate = sum)#Calculate the number of clones with a ceratin TCR usage and CDR3a and CDR3b sequences
 HIV_Healthy_stimulated2<-HIV_Healthy_stimulated1[!(apply(HIV_Healthy_stimulated1,1, function(y) any(y == 0))),]#Select only those clones that are shared between healthy and HIV patients
 
 
-stimulated <- final3 %>% filter(Stimulation =="stim")#Filter out the expanded clones for stimulated consition for all the patients
-stimulated1<-acast(stimulated, TCRusage+CDR3a+CDR3b~Subject+Stimulation, value.var = "n", fun.aggregate = sum)#Calculate the number of clones with a ceratin TCR usage and CDR3a and CDR3b sequences
+stimulated <- final3 %>% filter(Stimulation =="stim")#Filter out the expanded clones for stimulated condition for all the patients
+stimulated1<-acast(stimulated, TCRusage+CDR3a+CDR3b~Subject+Stimulation, value.var = "n", fun.aggregate = sum)#Calculate the number of clones with a certain TCR usage and CDR3a and CDR3b sequences
 stimulated2<-stimulated1[!(apply(stimulated1,1, function(y) any(y == 0))),]#Select the clones that are shared among the three patients
 
 
