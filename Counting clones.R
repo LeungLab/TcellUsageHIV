@@ -57,13 +57,13 @@ final400$Subject[c2]<-"HD"
 final500$Subject[c3]<-"HD"
 
 
-final3000<-split(final200, list(final200$Subject, final200$Stimulation))#Spilts the data set that give clones that occur 2 times in terms of subject and stimulation condition
+final3000<-split(final200, list(final200$Subject, final200$Stimulation))#Splits the data set that give clones that occur 2 times in terms of subject and stimulation condition
 Numerofclones_nequalto2<-sapply(final3000,function(x) sum(x$n))# This sums up the number of clones that occur 2 times in terms of subject and stimulation condition
 
-final4000<-split(final300, list(final300$Subject, final300$Stimulation))#Spilts the data set that give unique clones in terms of subject and stimulation condition
+final4000<-split(final300, list(final300$Subject, final300$Stimulation))#Splits the data set that give unique clones in terms of subject and stimulation condition
 Number_uniqueclones<-sapply(final4000, function(x) sum(x$n))#This sums up the unique clones in terms of subject and stimulation condition
 
-final5000<-split(final400,list(final400$Subject, final400$Stimulation))#Spilts the data set that give clones that occur more than 2 times in terms of subject and stimulation condition
+final5000<-split(final400,list(final400$Subject, final400$Stimulation))#Splits the data set that give clones that occur more than 2 times in terms of subject and stimulation condition
 Numberofclones_ngreaterthan2<-sapply(final5000, function(x) sum(x$n))# This sums up the number of clones that occur more than 2 times in terms of subject and stimulation condition
 
 
