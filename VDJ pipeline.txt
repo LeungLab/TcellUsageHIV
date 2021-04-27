@@ -1,0 +1,58 @@
+#!/bin/bash
+#SBATCH --time=24:00:00
+#SBATCH --nodes=1
+#SBATCH --tasks=4
+#SBATCH --mem=64000
+#SBATCH --account=leung
+#SBATCH --partition=lonepeak
+#SBATCH -o out_%j.txt
+#SBATCH -e ./stderr.txt
+#SBATCH -J VDJFasta
+
+# Input files
+R1=17921x1_S1_L001_R1_001.fastq
+R2=17921x1_S1_L001_R2_001.fastq
+
+
+module load pear/0.9.6
+module load blast/2.7.1
+module load hmmer3/3.1b2
+
+APP=/uufs/chpc.utah.edu/common/home/hcibcore/atlatl/app
+
+
+# Merge paired-end reads with PEAR
+mkdir -p Outputs/PEAR
+pear -f $R1 -r $R2 -j 10 -o Outputs/PEAR/17921x1 
+
+# Convert to FASTA
+
+$APP/seqtk seq -a Outputs/PEAR/17921x1.assembled.fastq > Outputs/PEAR/17921x1.assembled.fasta
+
+# Note: Installed VDJFasta pipeline from Mosbruger's Analysis in GNomEx A3304/ScriptsLogs
+VDJFASTAvMP=$APP/VDJFasta/vdjfasta-multiplate/bin
+
+# Make Logs directory
+mkdir -p Logs
+
+# VDJFasta: Demultiplex
+$VDJFASTAvMP/barcode-demultiplex.pl --dnafile=Outputs/PEAR/17921x1.assembled.fasta 1> Logs/VDJFasta_Demultiplex.log
+# move output to better named directory
+mkdir -p Outputs/VDJFasta/Demux
+mv Outputs/PEAR/*.fa Outputs/VDJFasta/Demux
+
+# VDJFasta: Well Analysis 
+parallel -v -j 10 $VDJFASTAvMP/well-vdjfasta.pl --file={} ::: Outputs/VDJFasta/Demux/*fa  1> Logs/VDJFasta_Well.log
+# move output to better named directory
+mkdir -p Outputs/VDJFasta/Well
+mv Outputs/VDJFasta/Demux/*VDJ.H3.L3.CH1.fa Outputs/VDJFasta/Well
+mv Outputs/VDJFasta/Demux/*H3dna.txt Outputs/VDJFasta/Well
+# File that goes into CellProfiler
+mv Outputs/VDJFasta/Demux/*VDJ.H3.L3.CH1.dnaH3.fa Outputs/VDJFasta/Well
+
+# VDJFasta: Cell Profiler Analysis 
+mkdir -p Outputs/VDJFasta/CellProfiler
+for i in Outputs/VDJFasta/Well/*dnaH3.fa; do
+  $VDJFASTAvMP/cell-profiler.pl --file $i --min_depth=1 --min_percenth=0.5 --min_percentl1=0.5 --min_percentl2=0.9; 
+done | tee -a  > Outputs/VDJFasta/CellProfiler/17921x1.txt
+echo "Finished!"
